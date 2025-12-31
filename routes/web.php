@@ -2,19 +2,21 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SkillController;
+use App\Http\Controllers\SearchController;
 use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\MessageController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\SettingController;
+use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\ResearchController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PublicationController;
 use App\Http\Controllers\NotificationController;
-use App\Http\Controllers\MessageController;
-use App\Http\Controllers\SearchController;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+    // Frontend Routes (Public)
+    Route::get('/', [FrontendController::class, 'index'])->name('home');
+    Route::get('/article/{slug}', [FrontendController::class, 'showArticle'])->name('frontend.article');
+    Route::get('/project/{id}', [FrontendController::class, 'showProject'])->name('frontend.project');
 
 Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified'])->group(function () {
 
