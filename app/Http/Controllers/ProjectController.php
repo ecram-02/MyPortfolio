@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Project;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class ProjectController extends Controller
 {
@@ -25,13 +26,18 @@ class ProjectController extends Controller
 
         Project::create([
             'title' => $request->title,
+            // ✅ SLUG GENERATED HERE (FRONTEND USE ONLY)
+            'slug' => Str::slug($request->title),
+
             'language' => $request->language,
             'description' => $request->description,
             'repository_link' => $request->repository_link,
             'status' => $request->status,
         ]);
 
-        return redirect()->route('projects.index')->with('success', 'Project added successfully.');
+        return redirect()
+            ->route('projects.index')
+            ->with('success', 'Project added successfully.');
     }
 
     public function update(Request $request, Project $project)
@@ -46,18 +52,26 @@ class ProjectController extends Controller
 
         $project->update([
             'title' => $request->title,
+            // ✅ UPDATE SLUG IF TITLE CHANGES
+            'slug' => Str::slug($request->title),
+
             'language' => $request->language,
             'description' => $request->description,
             'repository_link' => $request->repository_link,
             'status' => $request->status,
         ]);
 
-        return redirect()->route('projects.index')->with('success', 'Project updated successfully.');
+        return redirect()
+            ->route('projects.index')
+            ->with('success', 'Project updated successfully.');
     }
 
     public function destroy(Project $project)
     {
         $project->delete();
-        return redirect()->route('projects.index')->with('success', 'Project deleted successfully.');
+
+        return redirect()
+            ->route('projects.index')
+            ->with('success', 'Project deleted successfully.');
     }
 }

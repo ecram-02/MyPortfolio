@@ -64,32 +64,33 @@
                     <div class="col-md-6 mb-3">
                         <label for="phone" class="form-label">Phone Number</label>
                         <input type="text" class="form-control" name="phone" id="phone"
-                               value="{{ old('phone', $settings->phone ?? '') }}" placeholder="+1234567890">
+                               value="{{ old('phone', $settings->phone ?? '') }}" placeholder="+265 123 456 789">
                         @error('phone')
                             <div class="text-danger small">{{ $message }}</div>
                         @enderror
                     </div>
                     <div class="col-md-6 mb-3">
-                        <label for="resume_url" class="form-label">Resume URL</label>
-                        <input type="url" class="form-control" name="resume_url" id="resume_url"
-                               value="{{ old('resume_url', $settings->resume_url ?? '') }}" placeholder="https://example.com/resume.pdf">
-                        @error('resume_url')
+                        <label for="whatsapp_number" class="form-label">WhatsApp Number</label>
+                        <input type="text" class="form-control" name="whatsapp_number" id="whatsapp_number"
+                               value="{{ old('whatsapp_number', $settings->whatsapp_number ?? '') }}" placeholder="+265 123 456 789">
+                        <div class="form-text">Include country code (e.g., +265 for Malawi)</div>
+                        @error('whatsapp_number')
                             <div class="text-danger small">{{ $message }}</div>
                         @enderror
                     </div>
                 </div>
 
                 <h6 class="border-bottom pb-2 mt-4 mb-4">
-                    <i class="fas fa-image me-2"></i> Branding
+                    <i class="fas fa-image me-2"></i> Branding & Files
                 </h6>
 
-                <div class="mb-3">
+                <!-- Logo Upload -->
+                <div class="mb-4">
                     <label for="site_logo" class="form-label">Logo/Profile Image</label>
                     <input type="file" class="form-control" name="site_logo" id="site_logo" accept="image/*">
                     @if($settings && $settings->site_logo)
                         <div class="mt-2">
                             @php
-                                // Check if it's a stored file or external URL
                                 $logoPath = $settings->site_logo;
                                 if (strpos($logoPath, 'http') !== 0 && strpos($logoPath, 'storage/') !== 0) {
                                     $logoPath = 'storage/' . $logoPath;
@@ -110,8 +111,55 @@
                     @enderror
                 </div>
 
+                <!-- Resume File Upload -->
+                <div class="mb-4">
+                    <label for="resume_file" class="form-label">Resume/CV File</label>
+                    <input type="file" class="form-control" name="resume_file" id="resume_file" 
+                           accept=".pdf,.doc,.docx">
+                    
+                    @if($settings && $settings->resume_file)
+                        <div class="mt-2">
+                            @php
+                                $resumePath = $settings->resume_file;
+                                if (strpos($resumePath, 'http') !== 0 && strpos($resumePath, 'storage/') !== 0) {
+                                    $resumePath = 'storage/' . $resumePath;
+                                }
+                                $fileName = basename($resumePath);
+                                $fileExtension = pathinfo($fileName, PATHINFO_EXTENSION);
+                            @endphp
+                            
+                            <div class="alert alert-info p-2 d-flex justify-content-between align-items-center">
+                                <div>
+                                    <i class="fas fa-file-pdf text-danger me-2"></i>
+                                    <strong>Current Resume:</strong> 
+                                    <span class="ms-1">{{ $fileName }}</span>
+                                    <small class="text-muted ms-2">({{ strtoupper($fileExtension) }})</small>
+                                </div>
+                                <a href="{{ asset($resumePath) }}" 
+                                   target="_blank" 
+                                   class="btn btn-sm btn-outline-primary">
+                                    <i class="fas fa-download me-1"></i> Download
+                                </a>
+                            </div>
+                            
+                            <div class="form-check mt-2">
+                                <input class="form-check-input" type="checkbox" name="remove_resume" 
+                                       id="remove_resume" value="1">
+                                <label class="form-check-label text-danger" for="remove_resume">
+                                    Remove current resume file
+                                </label>
+                            </div>
+                        </div>
+                    @else
+                        <div class="form-text">Upload your resume/CV (PDF, DOC, DOCX - max 5MB)</div>
+                    @endif
+                    @error('resume_file')
+                        <div class="text-danger small">{{ $message }}</div>
+                    @enderror
+                </div>
+
                 <h6 class="border-bottom pb-2 mt-4 mb-4">
-                    <i class="fas fa-share-alt me-2"></i> Social Media Links
+                    <i class="fas fa-share-alt me-2"></i> Social Media & Professional Links
                 </h6>
 
                 <div class="row">
@@ -120,7 +168,8 @@
                             <i class="fab fa-linkedin text-primary me-2"></i> LinkedIn URL
                         </label>
                         <input type="url" class="form-control" name="linkedin_url" id="linkedin_url"
-                               value="{{ old('linkedin_url', $settings->linkedin_url ?? '') }}" placeholder="https://linkedin.com/in/yourprofile">
+                               value="{{ old('linkedin_url', $settings->linkedin_url ?? '') }}" 
+                               placeholder="https://linkedin.com/in/yourprofile">
                         @error('linkedin_url')
                             <div class="text-danger small">{{ $message }}</div>
                         @enderror
@@ -131,19 +180,22 @@
                             <i class="fab fa-github text-dark me-2"></i> GitHub URL
                         </label>
                         <input type="url" class="form-control" name="github_url" id="github_url"
-                               value="{{ old('github_url', $settings->github_url ?? '') }}" placeholder="https://github.com/yourusername">
+                               value="{{ old('github_url', $settings->github_url ?? '') }}" 
+                               placeholder="https://github.com/yourusername">
                         @error('github_url')
                             <div class="text-danger small">{{ $message }}</div>
                         @enderror
                     </div>
 
                     <div class="col-md-4 mb-3">
-                        <label for="twitter_url" class="form-label">
-                            <i class="fab fa-twitter text-info me-2"></i> Twitter URL
+                        <label for="whatsapp_number" class="form-label">
+                            <i class="fab fa-whatsapp text-success me-2"></i> WhatsApp Number
                         </label>
-                        <input type="url" class="form-control" name="twitter_url" id="twitter_url"
-                               value="{{ old('twitter_url', $settings->twitter_url ?? '') }}" placeholder="https://twitter.com/yourusername">
-                        @error('twitter_url')
+                        <input type="text" class="form-control" name="whatsapp_number" id="whatsapp_number"
+                               value="{{ old('whatsapp_number', $settings->whatsapp_number ?? '') }}" 
+                               placeholder="+265 123 456 789">
+                        <div class="form-text">For WhatsApp contact</div>
+                        @error('whatsapp_number')
                             <div class="text-danger small">{{ $message }}</div>
                         @enderror
                     </div>
@@ -184,7 +236,6 @@
                 <div class="col-md-3 text-center">
                     @if($settings && $settings->site_logo)
                         @php
-                            // Check if it's a stored file or external URL
                             $logoPath = $settings->site_logo;
                             if (strpos($logoPath, 'http') !== 0 && strpos($logoPath, 'storage/') !== 0) {
                                 $logoPath = 'storage/' . $logoPath;
@@ -207,21 +258,37 @@
                     <p class="text-muted">{{ $settings->about_summary ?? 'Your about summary will appear here...' }}</p>
                     <div class="d-flex gap-3">
                         @if($settings && $settings->linkedin_url)
-                            <a href="{{ $settings->linkedin_url }}" target="_blank" class="text-decoration-none">
+                            <a href="{{ $settings->linkedin_url }}" target="_blank" class="text-decoration-none" title="LinkedIn">
                                 <i class="fab fa-linkedin fa-lg text-primary"></i>
                             </a>
                         @endif
                         @if($settings && $settings->github_url)
-                            <a href="{{ $settings->github_url }}" target="_blank" class="text-decoration-none">
+                            <a href="{{ $settings->github_url }}" target="_blank" class="text-decoration-none" title="GitHub">
                                 <i class="fab fa-github fa-lg text-dark"></i>
                             </a>
                         @endif
-                        @if($settings && $settings->twitter_url)
-                            <a href="{{ $settings->twitter_url }}" target="_blank" class="text-decoration-none">
-                                <i class="fab fa-twitter fa-lg text-info"></i>
+                        @if($settings && $settings->whatsapp_number)
+                            <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $settings->whatsapp_number) }}" 
+                               target="_blank" class="text-decoration-none" title="WhatsApp">
+                                <i class="fab fa-whatsapp fa-lg text-success"></i>
                             </a>
                         @endif
                     </div>
+                    @if($settings && $settings->resume_file)
+                        <div class="mt-3">
+                            @php
+                                $resumePath = $settings->resume_file;
+                                if (strpos($resumePath, 'http') !== 0 && strpos($resumePath, 'storage/') !== 0) {
+                                    $resumePath = 'storage/' . $resumePath;
+                                }
+                            @endphp
+                            <a href="{{ asset($resumePath) }}" 
+                               target="_blank" 
+                               class="btn btn-sm btn-outline-primary">
+                                <i class="fas fa-download me-1"></i> Download Resume
+                            </a>
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>
@@ -251,6 +318,23 @@
                 }
             }
             reader.readAsDataURL(file);
+        }
+    });
+
+    // File size validation for resume
+    document.getElementById('resume_file')?.addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        const maxSize = 5 * 1024 * 1024; // 5MB
+        const allowedTypes = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
+        
+        if (file) {
+            if (file.size > maxSize) {
+                alert('File size must be less than 5MB');
+                this.value = '';
+            } else if (!allowedTypes.includes(file.type)) {
+                alert('Only PDF, DOC, and DOCX files are allowed');
+                this.value = '';
+            }
         }
     });
 </script>

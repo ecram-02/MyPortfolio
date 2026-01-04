@@ -58,7 +58,7 @@ class Article extends Model
         return 'https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=1200&h=630&fit=crop';
     }
 
-    // Get reading time
+    // Get reading time (for display)
     public function getReadingTimeAttribute()
     {
         $words = str_word_count(strip_tags($this->content));
@@ -66,10 +66,17 @@ class Article extends Model
         return $minutes . ' min read';
     }
 
-    // Get author name (you!)
+    // Get reading time in minutes (for JavaScript)
+    public function getReadingTimeMinutesAttribute()
+    {
+        $words = str_word_count(strip_tags($this->content));
+        return ceil($words / 200);
+    }
+
+    // Get author name
     public function getAuthorAttribute()
     {
-        return 'Ecram Mnthali'; // Or get from auth user if needed
+        return 'Ecram Mnthali';
     }
 
     // Scope for published articles
@@ -94,4 +101,5 @@ class Article extends Model
         return $query->where('status', 'scheduled')
                     ->where('published_at', '>', now());
     }
+
 }

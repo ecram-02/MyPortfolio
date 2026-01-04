@@ -17,8 +17,8 @@ class Setting extends Model
         'address',            // Optional address
         'linkedin_url',       // LinkedIn profile
         'github_url',         // GitHub profile
-        'twitter_url',        // Twitter profile
-        'resume_url',         // Resume/CV download link
+        'whatsapp_number',    // WhatsApp number
+        'resume_file',        // Resume/CV file path
         'about_summary',      // Short bio/about text
         'dark_mode',          // Theme setting
     ];

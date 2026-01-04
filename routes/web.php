@@ -13,23 +13,39 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PublicationController;
 use App\Http\Controllers\NotificationController;
 
-    // Frontend Routes (Public)
-    Route::get('/', [FrontendController::class, 'index'])->name('home');
-    Route::get('/article/{slug}', [FrontendController::class, 'showArticle'])->name('frontend.article');
-    Route::get('/project/{id}', [FrontendController::class, 'showProject'])->name('frontend.project');
+// Frontend Routes (Public)
+// Frontend Routes (Public)
+// PUBLIC route for showing single article - MUST BE DEFINED BEFORE admin routes
+Route::get('/blog/{slug}', [FrontendController::class, 'showArticle'])->name('frontend.article.show');
 
+// Frontend Routes (Public)
+Route::name('frontend.')->group(function () {
+    Route::get('/', [FrontendController::class, 'about'])->name('about');
+
+    Route::get('/research', [FrontendController::class, 'research'])->name('research');
+    Route::get('/research/{slug}', [FrontendController::class, 'showResearch'])
+        ->name('research.show');
+
+    Route::get('/blog', [FrontendController::class, 'articles'])->name('articles');
+    Route::get('/blog/{slug}', [FrontendController::class, 'showArticle'])->name('article.show');
+
+    Route::get('/portfolio', [FrontendController::class, 'projects'])->name('projects');
+    Route::get('/portfolio/{slug}', [FrontendController::class, 'showProject'])->name('project.show');
+
+    Route::get('/contact', [FrontendController::class, 'contact'])->name('contact');
+});
+
+// Admin Routes (Protected)
 Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified'])->group(function () {
-
-    Route::get('/dashboard', [DashboardController::class,'index'])->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     // Technical Expertise
     Route::resource('skills', SkillController::class);
 
-    // Article Management
+    // Article Management (Admin)
     Route::resource('articles', ArticleController::class);
     Route::post('/articles/upload-image', [ArticleController::class, 'uploadImage'])
          ->name('articles.upload-image');
-    
 
     // Publication Management
     Route::resource('publications', PublicationController::class);
@@ -37,7 +53,7 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
     // Research Management
     Route::resource('researches', ResearchController::class);
 
-    // Projects Management
+    // Projects Management (Admin)
     Route::resource('projects', ProjectController::class);
 
     // Notifications
@@ -61,6 +77,6 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
     Route::post('/search', [SearchController::class, 'globalSearch'])->name('search.global');
 
     // Settings
-  Route::get('/settings', [SettingController::class,'index'])->name('settings.index');
-    Route::post('/settings', [SettingController::class,'update'])->name('settings.update');
+    Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
+    Route::post('/settings', [SettingController::class, 'update'])->name('settings.update');
 });

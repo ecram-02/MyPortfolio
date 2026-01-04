@@ -52,21 +52,23 @@ class ArticleController extends Controller
             ->with('success', 'Article created successfully.');
     }
 
-    public function show(Article $article)
-    {
-        // Increment views
-        $article->increment('views');
-        
-        // Get related articles (same category)
-        $relatedArticles = Article::where('category', $article->category)
-            ->where('id', '!=', $article->id)
-            ->where('status', 'published')
-            ->latest()
-            ->take(3)
-            ->get();
+    // In ArticleController.php, update the show method:
+public function show(Article $article)
+{
+    // For admin panel - show any article regardless of status
+    // Increment views
+    $article->increment('views');
+    
+    // Get related articles (same category)
+    $relatedArticles = Article::where('category', $article->category)
+        ->where('id', '!=', $article->id)
+        ->latest()
+        ->take(3)
+        ->get();
 
-        return view('articles.show', compact('article', 'relatedArticles'));
-    }
+    // Return admin view
+    return view('articles.show', compact('article', 'relatedArticles'));
+}
 
     public function edit(Article $article)
     {
