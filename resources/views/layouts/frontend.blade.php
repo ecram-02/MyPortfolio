@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="light">
-<head>
+<head> 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Ecram Mnthali - Network Engineer & Developer specializing in network infrastructure, IoT systems, and full-stack development.">
@@ -228,6 +228,141 @@
             }
         }
 
+        /* ===== Loading Spinner Styles ===== */
+        .loading-spinner {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--bg-primary);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+
+        .loading-spinner.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        /* Flipping Squares Spinner */
+        .flipping-squares-spinner {
+            width: 120px;
+            height: 120px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            transform: scale(1);
+        }
+
+        .flipping-squares-spinner.small {
+            width: 80px;
+            height: 80px;
+            gap: 6px;
+        }
+
+        .flipping-squares-spinner.x-small {
+            width: 60px;
+            height: 60px;
+            gap: 4px;
+        }
+
+        .flipping-square {
+            background-color: var(--primary);
+            animation: flip-square 1.8s infinite;
+            border-radius: 6px;
+        }
+
+        .flipping-square:nth-child(1) {
+            animation-delay: 0s;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+        }
+
+        .flipping-square:nth-child(2) {
+            animation-delay: 0.3s;
+            background: linear-gradient(135deg, var(--secondary), var(--accent-light));
+        }
+
+        .flipping-square:nth-child(3) {
+            animation-delay: 0.6s;
+            background: linear-gradient(135deg, var(--accent), var(--accent-light));
+        }
+
+        .flipping-square:nth-child(4) {
+            animation-delay: 0.9s;
+            background: linear-gradient(135deg, var(--primary-light), var(--secondary));
+        }
+
+        @keyframes flip-square {
+            0%, 100% { 
+                transform: rotateX(0) scale(1);
+                opacity: 1;
+            }
+            25% { 
+                transform: rotateX(180deg) scale(0.8);
+                opacity: 0.8;
+            }
+            50% { 
+                transform: rotateX(0) scale(1);
+                opacity: 1;
+            }
+            75% { 
+                transform: rotateX(-180deg) scale(1.2);
+                opacity: 0.8;
+            }
+        }
+
+        .spinner-text {
+            margin-top: 1.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-align: center;
+            max-width: 200px;
+        }
+
+        .spinner-text.small {
+            font-size: 0.9rem;
+            margin-top: 1rem;
+        }
+
+        .spinner-text.x-small {
+            font-size: 0.8rem;
+            margin-top: 0.75rem;
+        }
+
+        /* Responsive spinner sizing */
+        @media (max-width: 768px) {
+            .flipping-squares-spinner {
+                width: 100px;
+                height: 100px;
+                gap: 7px;
+            }
+            
+            .spinner-text {
+                font-size: 0.95rem;
+                max-width: 180px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .flipping-squares-spinner {
+                width: 80px;
+                height: 80px;
+                gap: 6px;
+            }
+            
+            .spinner-text {
+                font-size: 0.9rem;
+                max-width: 160px;
+            }
+        }
+
         /* ===== Header ===== */
         .main-header {
             position: fixed;
@@ -428,6 +563,20 @@
         .main-content {
             margin-top: var(--header-height);
             min-height: calc(100vh - var(--header-height) - 260px);
+            opacity: 0;
+            animation: fadeInContent 0.5s ease forwards;
+            animation-delay: 0.3s;
+        }
+
+        @keyframes fadeInContent {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         /* ===== Page Header ===== */
@@ -941,6 +1090,17 @@
     @stack('styles')
 </head>
 <body class="theme-transition">
+    <!-- Loading Spinner -->
+    <div class="loading-spinner" id="loadingSpinner">
+        <div class="flipping-squares-spinner">
+            <div class="flipping-square"></div>
+            <div class="flipping-square"></div>
+            <div class="flipping-square"></div>
+            <div class="flipping-square"></div>
+        </div>
+        <div class="spinner-text">Loading content...</div>
+    </div>
+
     <!-- Header -->
     <header class="main-header">
         <div class="container header-content">
@@ -1088,6 +1248,62 @@
     </footer>
 
     <script>
+        // Loading Spinner Management
+        const loadingSpinner = document.getElementById('loadingSpinner');
+        let isPageLoaded = false;
+        
+        // Hide spinner when page is fully loaded
+        function hideLoadingSpinner() {
+            if (!isPageLoaded) {
+                loadingSpinner.classList.add('hidden');
+                isPageLoaded = true;
+            }
+        }
+        
+        // Show spinner for certain actions
+        function showLoadingSpinner() {
+            loadingSpinner.classList.remove('hidden');
+        }
+        
+        // Hide spinner when page is loaded
+        window.addEventListener('load', () => {
+            setTimeout(hideLoadingSpinner, 500); // Show spinner for at least 500ms
+        });
+        
+        // Also hide spinner if page takes too long to load
+        setTimeout(hideLoadingSpinner, 3000); // Maximum 3 seconds
+        
+        // Smooth page transitions
+        document.addEventListener('DOMContentLoaded', () => {
+            // Add loaded class for transitions
+            document.body.classList.add('loaded');
+            
+            // Check for reduced motion preference
+            if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.documentElement.style.setProperty('--transition-normal', '0s');
+                document.documentElement.style.setProperty('--transition-slow', '0s');
+                
+                // Reduce spinner animation for reduced motion
+                const style = document.createElement('style');
+                style.textContent = `
+                    .flipping-square {
+                        animation: flip-square 2.4s infinite !important;
+                    }
+                    @keyframes flip-square {
+                        0%, 100% { 
+                            transform: rotateX(0) scale(1);
+                            opacity: 1;
+                        }
+                        50% { 
+                            transform: rotateX(180deg) scale(0.9);
+                            opacity: 0.9;
+                        }
+                    }
+                `;
+                document.head.appendChild(style);
+            }
+        });
+
         // Theme Toggle
         const themeToggle = document.getElementById('themeToggle');
         const themeIcon = document.getElementById('themeIcon');
@@ -1202,17 +1418,36 @@
         const savedTheme = localStorage.getItem('portfolio-theme') || 'light';
         setTheme(savedTheme);
 
-        // Initialize
-        document.addEventListener('DOMContentLoaded', () => {
-            // Add loaded class for transitions
-            document.body.classList.add('loaded');
+        // Adaptive spinner size based on viewport
+        function updateSpinnerSize() {
+            const spinner = document.querySelector('.flipping-squares-spinner');
+            const spinnerText = document.querySelector('.spinner-text');
             
-            // Check for reduced motion preference
-            if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-                document.documentElement.style.setProperty('--transition-normal', '0s');
-                document.documentElement.style.setProperty('--transition-slow', '0s');
+            if (window.innerWidth <= 480) {
+                spinner.classList.add('x-small');
+                spinner.classList.remove('small');
+                if (spinnerText) {
+                    spinnerText.classList.add('x-small');
+                    spinnerText.classList.remove('small');
+                }
+            } else if (window.innerWidth <= 768) {
+                spinner.classList.add('small');
+                spinner.classList.remove('x-small');
+                if (spinnerText) {
+                    spinnerText.classList.add('small');
+                    spinnerText.classList.remove('x-small');
+                }
+            } else {
+                spinner.classList.remove('small', 'x-small');
+                if (spinnerText) {
+                    spinnerText.classList.remove('small', 'x-small');
+                }
             }
-        });
+        }
+        
+        // Update spinner size on load and resize
+        window.addEventListener('load', updateSpinnerSize);
+        window.addEventListener('resize', updateSpinnerSize);
     </script>
     
     @stack('scripts')
