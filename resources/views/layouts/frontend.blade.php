@@ -1197,10 +1197,12 @@
                         Network Engineer & Full-Stack Developer specializing in secure infrastructure and scalable web applications.
                     </p>
                     <div class="footer-social">
-                        <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $settings->whatsapp_number) }}" 
-                               class="social-link" aria-label="WhatsApp" target="_blank" title="WhatsApp">
-                                <i class="fab fa-whatsapp"></i>
-                            </a>
+                        @if($settings && $settings->whatsapp_number)
+    <a href="https://wa.me/{{ $settings->whatsapp_number }}">
+        WhatsApp
+    </a>
+@endif
+
                         <a href="{{ $settings->github_url ?? '#' }}" aria-label="GitHub" target="_blank"><i class="fab fa-github"></i></a>
                         <a href="{{ $settings->linkedin_url ?? '#' }}" aria-label="LinkedIn" target="_blank"><i class="fab fa-linkedin"></i></a>
                         
