@@ -57,8 +57,8 @@
             --transition-slow: all 0.5s ease;
             
             /* Layout */
-            --header-height: 64px;
-            --container-width: 1200px;
+            --header-height: 110px; /* ← increased from 90px */
+            --container-width: 1800px;
             --sidebar-width: 280px;
             --border-radius: 10px;
             --border-radius-sm: 6px;
@@ -392,8 +392,8 @@
         }
 
         .logo-img {
-            width: 38px;
-            height: 38px;
+            width: 44px;         /* ← slightly larger to match taller header */
+            height: 44px;
             border-radius: var(--border-radius-sm);
             object-fit: cover;
             border: 2px solid var(--primary);
@@ -416,6 +416,8 @@
             display: flex;
             align-items: center;
             gap: 1.5rem;
+            /* ensure nav is perfectly centred vertically within the flex row */
+            align-self: center;
         }
 
         @media (max-width: 992px) {
@@ -439,6 +441,9 @@
             transition: var(--transition-fast);
             font-size: 0.95rem;
             white-space: nowrap;
+            /* vertically centre the text within the taller header */
+            display: flex;
+            align-items: center;
         }
 
         .nav-link:hover {
@@ -1198,8 +1203,8 @@
                     </p>
                     <div class="footer-social">
                         @if($settings && $settings->whatsapp_number)
-    <a href="https://wa.me/{{ $settings->whatsapp_number }}">
-        WhatsApp
+    <a href="https://wa.me/{{ $settings->whatsapp_number }}" class="fab far-whatsapp">
+
     </a>
 @endif
 

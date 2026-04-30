@@ -381,7 +381,7 @@
                         <div class="timeline-date">2021 - Present</div>
                         <div class="timeline-content">
                             <div class="font-medium text-primary mb-1">BSc Computer Systems & Security</div>
-                            <div class="text-sm text-muted">University of Malawi - Polytechnic</div>
+                            <div class="text-sm text-muted">Malawi University of Science and Technology - MUST</div>
                         </div>
                     </div>
                 </div>
@@ -398,7 +398,7 @@
                     <div class="timeline-item">
                         <div class="timeline-date">2020 - Present</div>
                         <div class="timeline-content">
-                            <div class="font-medium text-primary mb-1">Network Engineer & Developer</div>
+                            <div class="font-medium text-primary mb-1">Network Security Engineer & Developer</div>
                             <div class="text-sm text-muted">Freelance & Contract</div>
                         </div>
                     </div>
