@@ -4,74 +4,86 @@
 
 @section('content')
 
-<!-- Page Header -->
-<section class="section">
+<!-- Contact Header Section - Matches Articles Page Style -->
+<section class="page-header section">
     <div class="container">
         <div class="section-header">
-            <h1>Contact</h1>
+            <h1>Let's work together</h1>
             <div class="header-line"></div>
             <p class="text-muted mt-2" style="max-width: 720px;">
-                Available for network engineering projects, web development work, 
-                and system administration consulting.
+                Collaboration, speaking invites, or research discussions—reach out by email for anything that needs a proper reply. I'm also on the channels below.
             </p>
         </div>
     </div>
 </section>
 
-<!-- Contact Cards Grid -->
+<!-- Contact Content Section -->
 <section class="section-sm">
     <div class="container">
         <div class="contact-grid">
-            <!-- Professional Inquiry -->
-            <div class="contact-card text-center">
-                <div class="contact-header mb-3">
-                    <i class="fas fa-envelope text-2xl text-primary mb-2"></i>
-                    <h3>Professional Inquiry</h3>
-                    <p class="text-muted mb-3" style="font-size: 0.9rem;">
-                        For project discussions, collaboration, or technical consulting.
-                    </p>
+            <!-- Main Email Card -->
+            <div class="email-card">
+                <div class="icon-box-large">
+                    <i class="fas fa-envelope"></i>
                 </div>
-                <a href="mailto:{{ $settings->contact_email ?? 'ecram.mnthali@example.com' }}" 
-                   class="btn btn-primary w-full view-btn">
-                    Email Me
-                </a>
+                <h2>Email</h2>
+                <p>Best for collaboration, talks, and formal inquiries</p>
+                
+                <div class="email-action">
+                    <span class="email-address">{{ $settings->contact_email ?? 'ecram.mnthali@example.com' }}</span>
+                    <button class="copy-btn" onclick="copyEmail()">Copy</button>
+                </div>
+                
+                <a href="mailto:{{ $settings->contact_email ?? 'ecram.mnthali@example.com' }}" class="send-email-btn">Send email</a>
             </div>
 
-            <!-- Availability -->
-            <div class="contact-card text-center">
-                <div class="contact-header mb-3">
-                    <i class="fas fa-calendar-check text-2xl text-primary mb-2"></i>
-                    <h3>Availability</h3>
-                    <p class="text-muted mb-1">Completing BSc in Computer Systems & Security</p>
-                    <p class="text-muted mb-1">Available for part-time projects</p>
-                    <p class="text-muted mb-0">Open to graduate roles 2024</p>
-                </div>
-                <div class="mt-3 p-3 bg-bg-tertiary rounded-lg text-left">
-                    <p class="text-xs text-muted mb-1"><i class="fas fa-globe mr-2"></i> Timezone: CAT (UTC+2)</p>
-                    <p class="text-xs text-muted mb-0"><i class="fas fa-clock mr-2"></i> Response: Within 24 hours</p>
-                </div>
-            </div>
+            <!-- Social Links Column -->
+            <div class="social-links-wrapper">
+                <p class="sub-label">ALSO ON</p>
+                
+                <div class="social-links-container">
+                    @if($settings->linkedin_url ?? false)
+                    <a href="{{ $settings->linkedin_url }}" class="social-card" target="_blank" rel="noopener noreferrer">
+                        <div class="social-icon"><i class="fab fa-linkedin-in"></i></div>
+                        <div class="social-info">
+                            <h3>LinkedIn</h3>
+                            <p>Professional network</p>
+                        </div>
+                    </a>
+                    @endif
 
-            <!-- Support & Consultation -->
-            <div class="contact-card text-center">
-                <div class="contact-header mb-3">
-                    <i class="fas fa-headset text-2xl text-primary mb-2"></i>
-                    <h3>Support & Consultation</h3>
+                    @if($settings->github_url ?? false)
+                    <a href="{{ $settings->github_url }}" class="social-card" target="_blank" rel="noopener noreferrer">
+                        <div class="social-icon"><i class="fab fa-github"></i></div>
+                        <div class="social-info">
+                            <h3>GitHub</h3>
+                            <p>Code & projects</p>
+                        </div>
+                    </a>
+                    @endif
+
+                    @if($settings->whatsapp_number ?? false)
+                    <a href="https://wa.me/{{ $settings->whatsapp_number }}" class="social-card" target="_blank" rel="noopener noreferrer">
+                        <div class="social-icon"><i class="fab fa-whatsapp"></i></div>
+                        <div class="social-info">
+                            <h3>WhatsApp</h3>
+                            <p>Quick messages</p>
+                        </div>
+                    </a>
+                    @endif
+
+                    @if($settings->twitter_url ?? false)
+                    <a href="{{ $settings->twitter_url }}" class="social-card" target="_blank" rel="noopener noreferrer">
+                        <div class="social-icon"><i class="fab fa-x-twitter"></i></div>
+                        <div class="social-info">
+                            <h3>X (Twitter)</h3>
+                            <p>Updates & DMs</p>
+                        </div>
+                    </a>
+                    @endif
                 </div>
-                <div class="text-left" style="font-size: 0.9rem;">
-                    <div class="mb-2">
-                        <h5 class="text-sm font-medium mb-1">Technical Consultation</h5>
-                        <p class="text-xs text-muted">Network architecture review and optimization</p>
-                    </div>
-                    <div class="mb-2">
-                        <h5 class="text-sm font-medium mb-1">Project Development</h5>
-                        <p class="text-xs text-muted">Full-stack web application development</p>
-                    </div>
-                    <div>
-                        <h5 class="text-sm font-medium mb-1">Infrastructure Setup</h5>
-                        <p class="text-xs text-muted">Server configuration and network deployment</p>
-                    </div>
-                </div>
+
+                <p class="footer-note">I usually reply to email within a few days. For urgent requests, say so in the subject line.</p>
             </div>
         </div>
     </div>
@@ -80,8 +92,12 @@
 @push('styles')
 <style>
 /* ===============================
-   HEADER
+   PAGE HEADER - Matching Articles Page
 ================================ */
+.page-header {
+    padding: 3rem 0 1.5rem;
+}
+
 .section-header {
     text-align: left;
 }
@@ -89,6 +105,8 @@
 .section-header h1 {
     font-size: 2.2rem;
     font-weight: 800;
+    margin-bottom: 0.75rem;
+    color: var(--text-primary);
 }
 
 .header-line {
@@ -96,7 +114,12 @@
     height: 3px;
     background: linear-gradient(90deg, var(--primary), var(--secondary));
     border-radius: 2px;
-    margin-top: .5rem;
+    margin-top: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.text-muted {
+    color: var(--text-secondary);
 }
 
 /* ===============================
@@ -104,96 +127,287 @@
 ================================ */
 .contact-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1.25rem;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    max-width: 1000px;
+    margin: 0 auto;
 }
 
 /* ===============================
-   CONTACT CARD
+   EMAIL CARD
 ================================ */
-.contact-card {
+.email-card {
     background: var(--bg-primary);
-    border-radius: var(--border-radius);
     border: 1px solid var(--border-light);
-    display: flex;
-    flex-direction: column;
-    padding: 1rem;
-    transition: transform .25s ease, box-shadow .25s ease;
-    min-height: 220px;
-    height: auto;
+    border-radius: var(--border-radius);
+    padding: 2rem;
+    text-align: center;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
-.contact-card:hover {
+.email-card:hover {
     transform: translateY(-4px);
     box-shadow: var(--shadow-lg);
 }
 
-.contact-header {
-    margin-bottom: .75rem;
+.icon-box-large {
+    width: 70px;
+    height: 70px;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.25rem;
 }
 
-.contact-header h3 {
-    font-size: .95rem;
+.icon-box-large i {
+    font-size: 2rem;
+    color: white;
+}
+
+.email-card h2 {
+    font-size: 1.5rem;
     font-weight: 700;
-    margin: .25rem 0;
+    margin-bottom: 0.5rem;
     color: var(--text-primary);
 }
 
-.contact-header p {
-    font-size: .82rem;
+.email-card > p {
+    font-size: 0.875rem;
     color: var(--text-secondary);
+    margin-bottom: 1.5rem;
+}
+
+.email-action {
+    background: var(--bg-secondary);
+    border-radius: var(--border-radius-sm);
+    padding: 0.75rem 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+}
+
+.email-address {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--text-primary);
+    word-break: break-all;
+}
+
+.copy-btn {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 0.375rem 1rem;
+    border-radius: var(--border-radius-sm);
+    font-size: 0.75rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.copy-btn:hover {
+    background: var(--primary-dark);
+    transform: scale(0.98);
+}
+
+.send-email-btn {
+    display: inline-block;
+    background: transparent;
+    color: var(--primary);
+    border: 1.5px solid var(--primary);
+    padding: 0.625rem 1.5rem;
+    border-radius: var(--border-radius-sm);
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    width: 100%;
+}
+
+.send-email-btn:hover {
+    background: var(--primary);
+    color: white;
+    transform: translateY(-2px);
+}
+
+/* ===============================
+   SOCIAL LINKS SECTION
+================================ */
+.social-links-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.sub-label {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--text-tertiary);
+    margin-bottom: 0.25rem;
+}
+
+.social-links-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.social-card {
+    background: var(--bg-primary);
+    border: 1px solid var(--border-light);
+    border-radius: var(--border-radius);
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.social-card:hover {
+    box-shadow: var(--shadow-md);
+    border-color: var(--primary-light);
+}
+
+.social-icon {
+    width: 48px;
+    height: 48px;
+    background: var(--bg-secondary);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.social-icon i {
+    font-size: 1.25rem;
+    color: var(--primary);
+}
+
+.social-card:hover .social-icon {
+    background: var(--primary);
+}
+
+.social-card:hover .social-icon i {
+    color: white;
+}
+
+.social-info {
+    flex: 1;
+}
+
+.social-info h3 {
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+    color: var(--text-primary);
+}
+
+.social-info p {
+    font-size: 0.75rem;
+    color: var(--text-tertiary);
     margin: 0;
 }
 
-.view-btn {
-    font-size: .8rem;
-    padding: .35rem .75rem;
-    border: none;
-    border-radius: 6px;
-    background: var(--primary);
-    color: white;
-    text-decoration: none;
-    transition: all 0.2s ease;
-    margin-top: auto;
-}
-
-.view-btn:hover {
-    background: var(--primary-dark);
-    transform: translateX(2px);
+.footer-note {
+    font-size: 0.75rem;
+    color: var(--text-tertiary);
+    text-align: center;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border-light);
 }
 
 /* ===============================
-   RESPONSIVE (768px and below)
+   RESPONSIVE DESIGN
 ================================ */
-@media (max-width: 768px) {
+@media (max-width: 992px) {
     .contact-grid {
-        grid-template-columns: 1fr; /* One card per row */
-        gap: 1rem;
+        gap: 1.5rem;
+        max-width: 100%;
     }
 }
 
-/* ===============================
-   SMALL MOBILE (480px and below)
-================================ */
+@media (max-width: 768px) {
+    .page-header {
+        padding: 2rem 0 1rem;
+    }
+    
+    .section-header h1 {
+        font-size: 1.8rem;
+    }
+    
+    .contact-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    
+    .email-card {
+        padding: 1.5rem;
+    }
+    
+    .email-action {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .copy-btn {
+        width: 100%;
+    }
+}
+
 @media (max-width: 480px) {
-    .contact-card {
-        padding: .875rem;
+    .section-header h1 {
+        font-size: 1.5rem;
     }
-
-    .contact-header h3 {
-        font-size: .88rem;
+    
+    .email-card h2 {
+        font-size: 1.25rem;
     }
-
-    .contact-header p {
-        font-size: .78rem;
+    
+    .social-card {
+        padding: 0.875rem;
     }
-
-    .view-btn {
-        font-size: .75rem;
-        padding: .3rem .6rem;
+    
+    .social-icon {
+        width: 40px;
+        height: 40px;
+    }
+    
+    .social-icon i {
+        font-size: 1rem;
     }
 }
 </style>
+@endpush
+
+@push('scripts')
+<script>
+function copyEmail() {
+    const emailAddress = document.querySelector('.email-address').innerText;
+    navigator.clipboard.writeText(emailAddress).then(() => {
+        const copyBtn = document.querySelector('.copy-btn');
+        const originalText = copyBtn.innerText;
+        copyBtn.innerText = 'Copied!';
+        setTimeout(() => {
+            copyBtn.innerText = originalText;
+        }, 2000);
+    }).catch(err => {
+        console.error('Failed to copy: ', err);
+        alert('Failed to copy email address');
+    });
+}
+</script>
 @endpush
 
 @endsection

@@ -46,12 +46,12 @@
                 </div>
 
                 <!-- Description -->
-                <p class="research-description desktop-only">
-                    {{ Str::limit($research->description, 90) }}
-                </p>
-                <p class="research-description mobile-only">
-                    {{ Str::limit($research->description, 60) }}
-                </p>
+                <div class="research-description desktop-only">
+                    {!! Str::limit($research->description, 90) !!}
+                </div>
+                <div class="research-description mobile-only">
+                    {!! Str::limit($research->description, 60) !!}
+                </div>
 
                 <!-- Footer -->
                 <div class="research-footer">

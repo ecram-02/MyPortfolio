@@ -1,21 +1,16 @@
 <?php
+// app/Models/Research.php
 
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-
 class Research extends Model
 {
-   use HasFactory;
+    use HasFactory;
 
-    // Remove or comment out the explicit table name since Laravel will now use 'researches'
-    // protected $table = 'research'; // Remove this line
-    
-    // Or if you want to be explicit:
-    protected $table = 'researches'; // Add this line
-
+    protected $table = 'researches';
 
     protected $fillable = [
         'title', 'slug', 'category', 'type', 'start_date', 'end_date', 'description'
@@ -26,6 +21,25 @@ class Research extends Model
         'end_date' => 'date',
     ];
 
+    // Relationships for photos
+    public function photos()
+    {
+        return $this->hasMany(ResearchPhoto::class)->orderBy('position', 'asc');
+    }
+
+    public function featuredPhoto()
+    {
+        return $this->hasOne(ResearchPhoto::class)->where('is_featured', true);
+    }
+
+    // Get gallery photos (exclude featured)
+    public function galleryPhotos()
+    {
+        return $this->hasMany(ResearchPhoto::class)
+            ->where('is_featured', false)
+            ->orderBy('position', 'asc');
+    }
+
     // Automatically generate slug when creating/updating research
     protected static function booted()
     {
@@ -35,6 +49,11 @@ class Research extends Model
 
         static::updating(function ($research) {
             $research->slug = \Str::slug($research->title);
+        });
+        
+        // Cascade delete photos when research is deleted
+        static::deleting(function ($research) {
+            $research->photos()->delete();
         });
     }
 }

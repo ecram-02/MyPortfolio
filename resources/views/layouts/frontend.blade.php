@@ -7,7 +7,7 @@
     <meta name="keywords" content="Network Engineer, Developer, IoT Systems, Laravel, Network Security">
     <meta name="author" content="Ecram Mnthali">
     
-    <title>@yield('title', 'Ecram Mnthali | Network Engineer & Developer')</title>
+    <title>Ecram Mnthali | Network Engineer & Developer</title>
     
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -57,7 +57,7 @@
             --transition-slow: all 0.5s ease;
             
             /* Layout */
-            --header-height: 110px; /* ← increased from 90px */
+            --header-height: 110px;
             --container-width: 1800px;
             --sidebar-width: 280px;
             --border-radius: 10px;
@@ -392,7 +392,7 @@
         }
 
         .logo-img {
-            width: 44px;         /* ← slightly larger to match taller header */
+            width: 44px;
             height: 44px;
             border-radius: var(--border-radius-sm);
             object-fit: cover;
@@ -416,7 +416,6 @@
             display: flex;
             align-items: center;
             gap: 1.5rem;
-            /* ensure nav is perfectly centred vertically within the flex row */
             align-self: center;
         }
 
@@ -426,6 +425,8 @@
             }
         }
 
+        /* ===== CURVY NEON UNDERLINE NAVIGATION STYLES ===== */
+        /* Active link uses the current theme's primary color, distance between word and line is very small (2px gap) */
         .nav-links {
             display: flex;
             gap: 1.75rem;
@@ -441,32 +442,77 @@
             transition: var(--transition-fast);
             font-size: 0.95rem;
             white-space: nowrap;
-            /* vertically centre the text within the taller header */
             display: flex;
             align-items: center;
+            /* remove default underline if any */
+            text-decoration: none;
         }
 
         .nav-link:hover {
             color: var(--primary);
         }
 
+        /* Active link styling: Curvy Neon Underline effect with very small distance */
         .nav-link.active {
             color: var(--primary);
             font-weight: 600;
         }
 
+        /* Creating a beautiful curvy neon underline with gradient and slight glow, distance from text is only 2px */
         .nav-link.active::after {
             content: '';
             position: absolute;
-            bottom: -4px;
+            /* small distance: bottom is set to -2px instead of default -4px or -6px */
+            bottom: -2px;
             left: 0;
-            right: 0;
+            width: 100%;
             height: 2px;
-            background-color: var(--primary);
-            border-radius: 1px;
+            background: linear-gradient(90deg, var(--primary), var(--primary-light), var(--secondary), var(--primary));
+            border-radius: 4px;
+            /* curvy effect via slight rounded corners and subtle animation */
+            animation: gentleGlowPulse 1.8s ease-in-out infinite;
+            box-shadow: 0 0 4px var(--primary-light);
+        }
+        
+        /* Optional subtle glow animation to emphasize neon feel */
+        @keyframes gentleGlowPulse {
+            0% {
+                opacity: 0.8;
+                box-shadow: 0 0 2px var(--primary-light);
+            }
+            50% {
+                opacity: 1;
+                box-shadow: 0 0 6px var(--primary);
+            }
+            100% {
+                opacity: 0.8;
+                box-shadow: 0 0 2px var(--primary-light);
+            }
+        }
+        
+        /* Hover underline effect for non-active links: creates smooth curvy line on hover */
+        .nav-link:not(.active)::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0%;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary-light), var(--secondary));
+            border-radius: 4px;
+            transition: width 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+        }
+        
+        .nav-link:not(.active):hover::after {
+            width: 100%;
+        }
+        
+        /* Ensure the active link has full width underline always visible */
+        .nav-link.active::after {
+            width: 100%;
         }
 
-        /* Header Actions */
+        /* ===== Header Actions ===== */
         .header-actions {
             display: flex;
             align-items: center;
@@ -1121,7 +1167,7 @@
                 <!-- <span class="logo-text"></span> -->
             </a>
 
-            <!-- Desktop Navigation -->
+            <!-- Desktop Navigation: Enhanced with Curvy Neon Underline (distance 2px) -->
             <nav class="desktop-nav">
                 <ul class="nav-links">
                     <li>
@@ -1259,7 +1305,6 @@
         const loadingSpinner = document.getElementById('loadingSpinner');
         let isPageLoaded = false;
         
-        // Hide spinner when page is fully loaded
         function hideLoadingSpinner() {
             if (!isPageLoaded) {
                 loadingSpinner.classList.add('hidden');
@@ -1267,30 +1312,23 @@
             }
         }
         
-        // Show spinner for certain actions
         function showLoadingSpinner() {
             loadingSpinner.classList.remove('hidden');
         }
         
-        // Hide spinner when page is loaded
         window.addEventListener('load', () => {
-            setTimeout(hideLoadingSpinner, 500); // Show spinner for at least 500ms
+            setTimeout(hideLoadingSpinner, 500);
         });
         
-        // Also hide spinner if page takes too long to load
-        setTimeout(hideLoadingSpinner, 3000); // Maximum 3 seconds
+        setTimeout(hideLoadingSpinner, 3000);
         
-        // Smooth page transitions
         document.addEventListener('DOMContentLoaded', () => {
-            // Add loaded class for transitions
             document.body.classList.add('loaded');
             
-            // Check for reduced motion preference
             if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
                 document.documentElement.style.setProperty('--transition-normal', '0s');
                 document.documentElement.style.setProperty('--transition-slow', '0s');
                 
-                // Reduce spinner animation for reduced motion
                 const style = document.createElement('style');
                 style.textContent = `
                     .flipping-square {
@@ -1318,7 +1356,6 @@
 
         function setTheme(theme) {
             html.setAttribute('data-theme', theme);
-            // Sun icon appears in light theme, Moon icon appears in dark theme
             themeIcon.className = theme === 'dark' ? 'fas fa-moon' : 'fas fa-sun';
             localStorage.setItem('portfolio-theme', theme);
         }
@@ -1361,21 +1398,18 @@
         mobileDropdownBtn.addEventListener('mouseenter', showDropdown);
         mobileDropdownBtn.addEventListener('mouseleave', hideDropdown);
 
-        // Close dropdown when clicking outside
         document.addEventListener('click', function(e) {
             if (!mobileDropdownBtn.contains(e.target) && !mobileDropdownMenu.contains(e.target)) {
                 mobileDropdownMenu.classList.remove('show');
             }
         });
 
-        // Close dropdown with Escape key
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape' && mobileDropdownMenu.classList.contains('show')) {
                 mobileDropdownMenu.classList.remove('show');
             }
         });
 
-        // Active link highlighting
         const currentPath = window.location.pathname;
         const navLinks = document.querySelectorAll('.nav-link, .mobile-dropdown-link');
         
@@ -1385,7 +1419,6 @@
             }
         });
 
-        // Smooth scroll for anchor links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
@@ -1405,7 +1438,6 @@
             });
         });
 
-        // Header scroll effect
         let lastScroll = 0;
         const header = document.querySelector('.main-header');
 
@@ -1421,11 +1453,9 @@
             lastScroll = currentScroll;
         });
 
-        // Initialize theme
         const savedTheme = localStorage.getItem('portfolio-theme') || 'light';
         setTheme(savedTheme);
 
-        // Adaptive spinner size based on viewport
         function updateSpinnerSize() {
             const spinner = document.querySelector('.flipping-squares-spinner');
             const spinnerText = document.querySelector('.spinner-text');
@@ -1452,7 +1482,6 @@
             }
         }
         
-        // Update spinner size on load and resize
         window.addEventListener('load', updateSpinnerSize);
         window.addEventListener('resize', updateSpinnerSize);
     </script>
